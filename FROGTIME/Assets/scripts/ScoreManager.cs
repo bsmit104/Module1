@@ -36,7 +36,7 @@ public class ScoreManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(20f); // Wait for 20 seconds.
+            yield return new WaitForSeconds(5f); // Wait for 20 seconds.
 
             // Decrease the score by 1.
             //Debug.Log("lost a coin");

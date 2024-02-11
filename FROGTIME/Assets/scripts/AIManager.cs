@@ -9,10 +9,15 @@ public class AIManager : MonoBehaviour
 
     public float maxDetectionRange = 10f;
     public float chaseDistance = 5f;
+    public float killDistance = 5f;
     public LayerMask obstacleLayer;
 
     public Transform[] patrolWaypoints;
     private int currentWaypointIndex = 0;
+
+    public GameObject health;  // Assign the player GameObject in the Unity Editor
+    private PlayerHealth playerHealth;
+
 
     public enum AIState
     {
@@ -33,6 +38,13 @@ public class AIManager : MonoBehaviour
             Debug.LogError("Player not found in the scene. Make sure to tag your player GameObject.");
         }
         SetNextWaypoint();
+
+        playerHealth = health.GetComponent<PlayerHealth>();
+
+        if (playerHealth == null)
+        {
+            Debug.LogError("PlayerHealth component not found on the player GameObject.");
+        }
     }
 
     void Update()
@@ -58,6 +70,12 @@ public class AIManager : MonoBehaviour
         {
             // Player is not in line of sight
             OnPlayerLost();
+        }
+
+        if (distanceToPlayer < killDistance)
+        {
+            // Player is within chase distance
+            killPlayer();
         }
         // }
         // else
@@ -131,6 +149,18 @@ public class AIManager : MonoBehaviour
         isPlayerDetected = false;
         // You might want to change the state back to Patrol or another state based on your FSM design
         currentState = AIState.Patrol;
+    }
+
+    private void killPlayer()
+    {
+        if (playerHealth != null)
+        {
+            playerHealth.ChangeHealth(-50);
+        }
+        else
+        {
+            Debug.LogError("PlayerHealth reference is null. Make sure to set it in the Start method.");
+        }
     }
 
     private void SetNextWaypoint()
