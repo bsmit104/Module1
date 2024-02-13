@@ -1,3 +1,4 @@
+//asked chatgpt for FSM examples in Unity, it recommended attack, patrol, and chase
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,10 +13,12 @@ public class AIManager : MonoBehaviour
     public float killDistance = 5f;
     public LayerMask obstacleLayer;
 
+    public GameObject playerObject;
+
     public Transform[] patrolWaypoints;
     private int currentWaypointIndex = 0;
 
-    public GameObject health;  // Assign the player GameObject in the Unity Editor
+    public GameObject health;
     private PlayerHealth playerHealth;
 
 
@@ -60,21 +63,17 @@ public class AIManager : MonoBehaviour
         //     }
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        // Check distance to the player
         if (distanceToPlayer < chaseDistance)
         {
-            // Player is within chase distance
             OnPlayerDetected();
         }
         else
         {
-            // Player is not in line of sight
             OnPlayerLost();
         }
 
         if (distanceToPlayer < killDistance)
         {
-            // Player is within chase distance
             killPlayer();
         }
         // }
@@ -85,7 +84,7 @@ public class AIManager : MonoBehaviour
         //     OnPlayerLost();
         // }
 
-        // FSM logic
+        // FSM
         switch (currentState)
         {
             case AIState.Patrol:
@@ -103,7 +102,6 @@ public class AIManager : MonoBehaviour
                     SetNextWaypoint();
                 }
 
-                // // If close to the current waypoint, set the next waypoint
                 // if (Vector3.Distance(transform.position, patrolWaypoints[currentWaypointIndex].position) < 1f)
                 // {
                 //     SetNextWaypoint();
@@ -115,10 +113,8 @@ public class AIManager : MonoBehaviour
 
             case AIState.Chase:
                 Debug.Log("Chase State");
-                // If player is detected, set the destination to the player's position
                 agent.SetDestination(player.position);
 
-                // Transition to Attack state if close enough to the player
                 if (Vector3.Distance(transform.position, player.position) < 2f)
                 {
                     currentState = AIState.Attack;
@@ -127,7 +123,7 @@ public class AIManager : MonoBehaviour
 
             case AIState.Attack:
                 Debug.Log("Attack State");
-                // Implement your attack logic here
+                // not sure if gonna use
                 break;
 
             default:
@@ -135,19 +131,15 @@ public class AIManager : MonoBehaviour
         }
     }
 
-    // Call this method when the player is detected
     private void OnPlayerDetected()
     {
         isPlayerDetected = true;
-        // You might want to change the state to Chase or Attack based on your FSM design
         currentState = AIState.Chase;
     }
 
-    // Call this method when the player is lost or no longer detected
     private void OnPlayerLost()
     {
         isPlayerDetected = false;
-        // You might want to change the state back to Patrol or another state based on your FSM design
         currentState = AIState.Patrol;
     }
 
@@ -155,11 +147,12 @@ public class AIManager : MonoBehaviour
     {
         if (playerHealth != null)
         {
+            playerObject.transform.position = new Vector3(640.9f, 14.021f, 65.394f);
             playerHealth.ChangeHealth(-50);
         }
         else
         {
-            Debug.LogError("PlayerHealth reference is null. Make sure to set it in the Start method.");
+            Debug.Log("PlayerHealth is null");
         }
     }
 

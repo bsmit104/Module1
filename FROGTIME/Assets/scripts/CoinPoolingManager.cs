@@ -10,7 +10,7 @@ public class CoinPoolingManager : MonoBehaviour
 
     private List<GameObject> coinPool = new List<GameObject>();
 
-    //public Camera playerCamera;
+    //public Camera playerCamera; 
     public GameObject player;
     private Transform playerTransform;
     private ScoreManager scoreManager;

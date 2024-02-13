@@ -10,12 +10,25 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private int maxHealth = 90;
     public static bool died = false;
     private int currentHealth;
+    public GameObject playerObject;
     public GameObject gameOver;
+
+    public GameObject score;
+
+    public GameObject win;
+    private ScoreManager scoreManager;
     void Start()
     {
         currentHealth = maxHealth;
         if (healthBar == null) {
             GameObject.Find("healthBar");
+        }
+
+        scoreManager = score.GetComponent<ScoreManager>();
+
+        if (scoreManager == null)
+        {
+            Debug.LogError("PlayerHealth component not found on the player GameObject.");
         }
     }
 
@@ -40,11 +53,22 @@ public class PlayerHealth : MonoBehaviour
 
      public void BackAlive() {
         gameOver.SetActive(false);
+        win.SetActive(false);
         Time.timeScale = 1f;
         died = false;
         ChangeHealth(90);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        scoreManager.SetScore(3);
+        scoreManager.stopCoroutineAfterDie();
+
+        if (playerObject != null)
+        {
+            playerObject.transform.position = new Vector3(640.9f, 14.021f, 65.394f);
+        }
+        else {
+            Debug.Log("playerObject is null");
+        }
     }
 
     void DeadPause() {
