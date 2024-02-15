@@ -28,7 +28,7 @@ public class PlayerHealth : MonoBehaviour
 
         if (scoreManager == null)
         {
-            Debug.LogError("PlayerHealth component not found on the player GameObject.");
+            Debug.Log("PlayerHealth null");
         }
     }
 

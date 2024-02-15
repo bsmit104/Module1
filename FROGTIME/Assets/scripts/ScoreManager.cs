@@ -118,7 +118,7 @@ public class ScoreManager : MonoBehaviour
         UpdateScoreText();
     }
 
-
+///coroutine///
     IEnumerator StartKill()
     {
         while (score <= 0)

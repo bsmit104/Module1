@@ -38,7 +38,7 @@ public class AIManager : MonoBehaviour
 
         if (player == null)
         {
-            Debug.LogError("Player not found in the scene. Make sure to tag your player GameObject.");
+            Debug.Log("Player null");
         }
         SetNextWaypoint();
 
@@ -46,7 +46,7 @@ public class AIManager : MonoBehaviour
 
         if (playerHealth == null)
         {
-            Debug.LogError("PlayerHealth component not found on the player GameObject.");
+            Debug.Log("PlayerHealth null");
         }
     }
 
